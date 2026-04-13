@@ -1,0 +1,64 @@
+{
+  "name": "emf-renderer",
+  "version": "0.1.0",
+  "private": false,
+  "description": "A lightweight ESM renderer for Enhanced Metafile (EMF) content.",
+  "license": "MIT",
+  "author": "Smthie",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.15.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Smthie/emf-renderer.git"
+  },
+  "homepage": "https://github.com/Smthie/emf-renderer#readme",
+  "bugs": {
+    "url": "https://github.com/Smthie/emf-renderer/issues"
+  },
+  "keywords": [
+    "emf",
+    "renderer",
+    "metafile",
+    "graphics"
+  ],
+  "type": "module",
+  "main": "./dist/emf-renderer.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/emf-renderer.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "prepack": "pnpm build && pnpm build:types",
+    "dev:demo": "vite",
+    "build": "vite build",
+    "build:types": "tsc -p tsconfig.json",
+    "report:capabilities": "node scripts/capability-report.js",
+    "golden:plan": "node scripts/visual-golden.js plan",
+    "golden:generate": "node scripts/visual-golden.js generate",
+    "golden:verify": "node scripts/visual-golden.js verify",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:visual": "playwright test"
+  },
+  "dependencies": {
+    "fast-png": "^8.0.0",
+    "polygon-clipping": "^0.15.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.8",
+    "vitest": "^4.1.4"
+  }
+}
