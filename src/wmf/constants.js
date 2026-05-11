@@ -1,0 +1,22 @@
+export const META_EOF = 0x0000
+export const META_SAVEDC = 0x001e
+export const META_SETBKMODE = 0x0102
+export const META_SETROP2 = 0x0104
+export const META_RESTOREDC = 0x0127
+export const META_SELECTOBJECT = 0x012d
+export const META_SETTEXTALIGN = 0x012e
+export const META_DELETEOBJECT = 0x01f0
+export const META_SETBKCOLOR = 0x0201
+export const META_SETTEXTCOLOR = 0x0209
+export const META_SETWINDOWORG = 0x020b
+export const META_SETWINDOWEXT = 0x020c
+export const META_LINETO = 0x0213
+export const META_MOVETO = 0x0214
+export const META_CREATEPENINDIRECT = 0x02fa
+export const META_CREATEBRUSHINDIRECT = 0x02fc
+export const META_POLYGON = 0x0324
+export const META_INTERSECTCLIPRECT = 0x0416
+export const META_ELLIPSE = 0x0418
+export const META_ESCAPE = 0x0626
+
+export const PLACEABLE_WMF_KEY = 0x9ac6cdd7
