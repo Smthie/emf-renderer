@@ -1,0 +1,88 @@
+name: Windows golden
+
+# Optional, NON-BLOCKING correctness check: diff this renderer's output against
+# native Windows GDI+ (System.Drawing) reference renders of the core samples.
+# It never gates the main CI (build-and-test in ci.yml) — results are uploaded as
+# artifacts for inspection. This is the loop the darwin Playwright snapshots can't
+# provide: they prove self-consistency, this proves correctness vs Windows.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'samples/synthetic/**'
+      - 'samples/capability-matrix.js'
+      - 'scripts/visual-golden.js'
+      - 'scripts/render-gdiplus.ps1'
+      - 'scripts/generate-gdiplus-samples.ps1'
+      - 'tests/visual/golden-capture.spec.js'
+      - '.github/workflows/windows-golden.yml'
+
+jobs:
+  windows-golden:
+    runs-on: windows-latest
+    # Never fail the workflow on a golden mismatch; thresholds are still being
+    # calibrated and GDI+ vs Canvas antialiasing differs. Inspect the artifacts.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install chromium
+
+      # actual side: this renderer's PNGs (untrimmed, composited on white).
+      - name: Capture actual renders for the golden tiers
+        env:
+          EMF_CAPTURE_GOLDEN_ACTUAL: '1'
+        run: pnpm exec playwright test golden-capture
+
+      # expected side: native GDI+ reference PNGs at the same dimensions.
+      - name: Render GDI+ reference PNGs
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          ./scripts/render-gdiplus.ps1 -Tier windows-gdi
+          ./scripts/render-gdiplus.ps1 -Tier windows-gdiplus
+
+      - name: Import GDI+ references into the golden directories
+        continue-on-error: true
+        run: |
+          node scripts/visual-golden.js generate --tier windows-gdi --source-dir tests/visual/gdiplus-out/windows-gdi
+          node scripts/visual-golden.js generate --tier windows-gdiplus --source-dir tests/visual/gdiplus-out/windows-gdiplus
+
+      - name: Verify windows-gdi
+        continue-on-error: true
+        env:
+          EMF_NATIVE_GOLDEN_RUNNER: scripts/render-gdiplus.ps1
+        run: node scripts/visual-golden.js verify --tier windows-gdi
+
+      - name: Verify windows-gdiplus
+        continue-on-error: true
+        env:
+          EMF_NATIVE_GOLDEN_RUNNER: scripts/render-gdiplus.ps1
+        run: node scripts/visual-golden.js verify --tier windows-gdiplus
+
+      - name: Upload golden artifacts (actual / expected / gdiplus-out)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-goldens
+          path: |
+            tests/visual/actual/**
+            tests/visual/goldens/**
+            tests/visual/gdiplus-out/**
+          if-no-files-found: warn
