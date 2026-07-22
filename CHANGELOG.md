@@ -6,6 +6,31 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-07-22
+
+Initial release.
+
+### Added
+
+- `renderEmf` / `renderEmfToBlob` / `renderEmfToDataUrl` for rendering EMF and
+  EMF+ buffers to a Canvas, PNG `Blob`, or PNG data URL.
+- `renderWmf` / `renderWmfToBlob` / `renderWmfToDataUrl` for the WMF format, also
+  used for nested WMF-in-EMF content.
+- Classic EMF, EMF+, and WMF playback covering common primitives, paths,
+  clipping, text, bitmaps, raster operations (ROP), gradients, textures, custom
+  line caps, and nested metafiles.
+- Published TypeScript declarations generated from JSDoc.
+- Runtime diagnostics (`meta.diagnostics`, `meta.warnings`, `meta.unsupported`)
+  describing degraded or unsupported records instead of silently approximating.
+
+### Changed
+
+- Deduplicated the EMF+ binary primitives (`decodeArgb`, `readRectF`,
+  `readPointF`, `readPointFArray`, `readMatrix`, `signExtend`,
+  `readPackedInteger`) into a single `src/emfplus/primitives.js` module.
+- The visual test suite now asserts each render is non-blank and configures a
+  screenshot comparison threshold.
+
 ### Fixed
 
 - EMF+ `Restore` / `EndContainer` with an unmatched state token now no-op with
@@ -39,30 +64,5 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   single `image-surface-unavailable` diagnostic instead of being counted as both
   a warning and an unsupported record.
 
-### Changed
-
-- Deduplicated the EMF+ binary primitives (`decodeArgb`, `readRectF`,
-  `readPointF`, `readPointFArray`, `readMatrix`, `signExtend`,
-  `readPackedInteger`) into a single `src/emfplus/primitives.js` module.
-- The visual test suite now asserts each render is non-blank and configures a
-  screenshot comparison threshold.
-
-## [0.1.0]
-
-Initial release.
-
-### Added
-
-- `renderEmf` / `renderEmfToBlob` / `renderEmfToDataUrl` for rendering EMF and
-  EMF+ buffers to a Canvas, PNG `Blob`, or PNG data URL.
-- `renderWmf` / `renderWmfToBlob` / `renderWmfToDataUrl` for the WMF format, also
-  used for nested WMF-in-EMF content.
-- Classic EMF, EMF+, and WMF playback covering common primitives, paths,
-  clipping, text, bitmaps, raster operations (ROP), gradients, textures, custom
-  line caps, and nested metafiles.
-- Published TypeScript declarations generated from JSDoc.
-- Runtime diagnostics (`meta.diagnostics`, `meta.warnings`, `meta.unsupported`)
-  describing degraded or unsupported records instead of silently approximating.
-
-[Unreleased]: https://example.com/your-org/emf-renderer/compare/v0.1.0...HEAD
-[0.1.0]: https://example.com/your-org/emf-renderer/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Smthie/emf-renderer/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Smthie/emf-renderer/releases/tag/v0.1.0

@@ -18,7 +18,7 @@ describe('package manifest', () => {
     expect(manifest.private).toBe(false)
     expect(manifest.type).toBe('module')
     expect(manifest.main).toBe('./dist/emf-renderer.js')
-    expect(manifest.files).toEqual(['dist', 'README.md', 'LICENSE'])
+    expect(manifest.files).toEqual(['dist', 'README.md', 'README.zh-CN.md', 'LICENSE'])
     expect(manifest.exports?.['.']?.import).toBe('./dist/emf-renderer.js')
     expect(manifest.exports?.['.']?.types).toBe('./dist/types/index.d.ts')
     expect(manifest.types).toBe('./dist/types/index.d.ts')

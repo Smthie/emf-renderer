@@ -2,7 +2,7 @@
   "name": "emf-renderer",
   "version": "0.1.0",
   "private": false,
-  "description": "A lightweight ESM renderer for Enhanced Metafile (EMF) content.",
+  "description": "Render EMF, EMF+, and WMF Windows metafiles to Canvas and PNG in the browser.",
   "license": "MIT",
   "author": "Smthie",
   "engines": {
@@ -19,15 +19,22 @@
   },
   "keywords": [
     "emf",
-    "renderer",
+    "emf-plus",
+    "wmf",
     "metafile",
-    "graphics"
+    "renderer",
+    "canvas",
+    "png",
+    "browser",
+    "graphics",
+    "gdi"
   ],
   "type": "module",
   "main": "./dist/emf-renderer.js",
   "files": [
     "dist",
     "README.md",
+    "README.zh-CN.md",
     "LICENSE"
   ],
   "types": "./dist/types/index.d.ts",
