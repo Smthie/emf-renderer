@@ -1,42 +1,36 @@
 # emf-renderer
 
-`emf-renderer` 是一个纯前端 EMF/EMF+ 渲染库，面向浏览器环境，将二进制 EMF 内容渲染为 Canvas，并支持导出 PNG Blob/Data URL。
+English | [简体中文](./README.zh-CN.md)
 
-## 项目定位
+A pure front-end rendering library for Windows metafiles — classic EMF, EMF+, and WMF. It renders binary metafile content to a Canvas in the browser and exports PNG `Blob`s or data URLs.
 
-- 浏览器侧 EMF/EMF+ 渲染内核
-- 统一公开 API：`renderEmf`、`renderEmfToBlob`、`renderEmfToDataUrl`（及同构的 `renderWmf` 系列）
-- 以“渲染结果对象”为主，而不是单一导出格式
+## Positioning
 
-## 支持环境
+- A browser-side EMF/EMF+/WMF rendering engine
+- A unified public API: `renderEmf`, `renderEmfToBlob`, `renderEmfToDataUrl`, plus the isomorphic `renderWmf` family
+- Centered on a render-result object rather than a single export format
 
-- 浏览器主线程（`document.createElement('canvas')`）
-- 支持 `OffscreenCanvas` 的 Worker 场景
+## Supported environments
 
-当前不承诺：
+- Browser main thread (`document.createElement('canvas')`)
+- Worker contexts with `OffscreenCanvas` support
 
-- Node.js 原生无 Canvas 环境
-- 非浏览器宿主的通用运行时渲染
+Not currently promised:
 
-## 安装
+- Node.js environments without a native Canvas
+- General-purpose rendering in non-browser hosts
+
+The package ships as ESM only.
+
+## Install
 
 ```bash
 pnpm add emf-renderer
+# or
+npm install emf-renderer
 ```
 
-## 本地示例
-
-```bash
-pnpm dev:demo
-```
-
-然后访问 `http://127.0.0.1:4173/demo/`。
-
-如需直接加载仓库内样本，可访问：
-
-`http://127.0.0.1:4173/demo/?sample=synthetic%2Fclassic%2Fsynthetic-classic-shapes.emf`
-
-## 最小使用示例
+## Quick start
 
 ```js
 import { renderEmf, renderEmfToBlob, renderEmfToDataUrl } from 'emf-renderer'
@@ -68,14 +62,14 @@ main()
 
 ### `renderEmf(buffer, options?)`
 
-输入：
+Input:
 
 - `buffer`: `ArrayBuffer | Uint8Array`
-- `options.width?`: 输出宽度覆盖值
-- `options.height?`: 输出高度覆盖值
-- `options.trimTransparentBounds?`: 是否裁剪透明边界
+- `options.width?`: output width override
+- `options.height?`: output height override
+- `options.trimTransparentBounds?`: trim transparent borders from the output
 
-返回渲染结果对象：
+Returns a render-result object:
 
 - `canvas`: `HTMLCanvasElement | OffscreenCanvas`
 - `width`: number
@@ -84,23 +78,23 @@ main()
 - `meta.records`: number[]
 - `meta.warnings`: string[]
 - `meta.unsupported`: string[]
-- `meta.diagnostics`: `RenderDiagnostic[]` — 结构化的逐记录诊断；每项含 `level`（如 `"warning"` / `"unsupported"`）、`code`、`message`，并可选带 `source` / `recordType` / `recordOffset` / `objectId` / `capability`。降级或不支持的记录会在此显式上报，而非静默近似。
+- `meta.diagnostics`: `RenderDiagnostic[]` — structured per-record diagnostics; each entry carries `level` (e.g. `"warning"` / `"unsupported"`), `code`, and `message`, optionally with `source` / `recordType` / `recordOffset` / `objectId` / `capability`. Degraded or unsupported records are reported here explicitly instead of being silently approximated.
 - `toBlob(): Promise<Blob>`
 - `toDataUrl(): Promise<string>`
 
 ### `renderEmfToBlob(buffer, options?)`
 
-- 便捷函数，等价于 `await (await renderEmf(buffer, options)).toBlob()`
+- Convenience wrapper, equivalent to `await (await renderEmf(buffer, options)).toBlob()`
 
 ### `renderEmfToDataUrl(buffer, options?)`
 
-- 便捷函数，等价于 `await (await renderEmf(buffer, options)).toDataUrl()`
+- Convenience wrapper, equivalent to `await (await renderEmf(buffer, options)).toDataUrl()`
 
 ### `renderWmf(buffer, options?)` / `renderWmfToBlob` / `renderWmfToDataUrl`
 
-- 与 `renderEmf` 系列同构，输入为 WMF（Windows Metafile）二进制
-- 返回相同形状的渲染结果对象（`canvas`、`meta`、`toBlob`、`toDataUrl`）
-- `options` 支持 `width`、`height`、`trimTransparentBounds`
+- Isomorphic to the `renderEmf` family; the input is a WMF (Windows Metafile) binary
+- Returns the same render-result shape (`canvas`, `meta`, `toBlob`, `toDataUrl`)
+- `options` supports `width`, `height`, and `trimTransparentBounds`
 
 ```js
 import { renderWmf, renderWmfToDataUrl } from 'emf-renderer'
@@ -109,13 +103,25 @@ const result = await renderWmf(wmfBuffer)
 const dataUrl = await renderWmfToDataUrl(wmfBuffer)
 ```
 
-## 当前支持范围与限制
+## Current scope and limitations
 
-- classic EMF 与 EMF+ 均已具备可用渲染链路
-- 支持常见图元、路径、裁剪、文本、位图与部分 EMF+ 效果
-- 仍存在协议空白（如部分 classic 记录语义、复杂 EMF+ 文本排版、位图格式覆盖不足）
-- `meta.unsupported = []` 不等于与 GDI/GDI+ 像素级完全一致，视觉差异仍可能来自文本布局、渐变/插值策略与效果实现细节
+- Both classic EMF and EMF+ have working render pipelines
+- Supports common primitives, paths, clipping, text, bitmaps, and a range of EMF+ effects
+- Protocol gaps remain (some classic record semantics, complex EMF+ text layout, incomplete bitmap format coverage)
+- `meta.unsupported = []` does not mean pixel-perfect parity with GDI/GDI+; visual differences can still come from text layout, gradient/interpolation strategies, and effect implementation details
+
+## Local demo
+
+```bash
+pnpm dev:demo
+```
+
+Then open `http://127.0.0.1:4173/demo/`.
+
+To load a sample shipped with the repository:
+
+`http://127.0.0.1:4173/demo/?sample=synthetic%2Fclassic%2Fsynthetic-classic-shapes.emf`
 
 ## License
 
-见 [LICENSE](./LICENSE)。
+[MIT](./LICENSE)
