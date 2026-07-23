@@ -1,5 +1,9 @@
 # emf-renderer
 
+[![npm version](https://img.shields.io/npm/v/emf-renderer)](https://www.npmjs.com/package/emf-renderer)
+[![CI](https://github.com/Smthie/emf-renderer/actions/workflows/ci.yml/badge.svg)](https://github.com/Smthie/emf-renderer/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/emf-renderer)](./LICENSE)
+
 English | [简体中文](./README.zh-CN.md)
 
 A pure front-end rendering library for Windows metafiles — classic EMF, EMF+, and WMF. It renders binary metafile content to a Canvas in the browser and exports PNG `Blob`s or data URLs.

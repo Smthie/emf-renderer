@@ -1,5 +1,9 @@
 # emf-renderer
 
+[![npm version](https://img.shields.io/npm/v/emf-renderer)](https://www.npmjs.com/package/emf-renderer)
+[![CI](https://github.com/Smthie/emf-renderer/actions/workflows/ci.yml/badge.svg)](https://github.com/Smthie/emf-renderer/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/emf-renderer)](./LICENSE)
+
 [English](./README.md) | 简体中文
 
 `emf-renderer` 是一个纯前端的 Windows 图元文件渲染库，支持 classic EMF、EMF+ 与 WMF，面向浏览器环境，将二进制图元文件内容渲染为 Canvas，并支持导出 PNG `Blob` / Data URL。
